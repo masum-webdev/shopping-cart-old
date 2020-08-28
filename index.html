@@ -27,11 +27,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minus-item-one" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input  id="item-one-amount" type="text" class="form-control text-center" value="1">
+                           <button id="plus-item-one" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$ <span id='current-item-one-price'>1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -46,12 +46,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minus-item-two" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="item-two-amount" type="text" class="form-control text-center" value="1">
+                           <button id="plus-item-two" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$<span id='current-item-two-price'>59</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -68,22 +68,118 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="sub-total-price">00</span></h5>
+                        <h5>$<span id="tax-price">5</span></h5>
+                        <h5>$<span id="total-price">00</span></h5>
                      </div>
                   </div>
                </div>
 
                 <!-- checkout   -->
                <div class="col-md-12 pt-4 pb-4">
-                  <button type="button" class="btn btn-success check-out">Check Out</button>
+                  <button id="checkout-button" type="button" class="btn btn-success check-out">Check Out</button>
                </div>
 
             </div>
          </div>
       </div>
    </section>
+
+   <!-- javascript -->
+   <script>
+      //----------------------function area----------------------
+
+      //take number from input tag function
+      function takeItemAmountNumber(id){
+         const itemAmount=document.getElementById(id).value;
+         const itemNumber=parseInt(itemAmount);
+         return itemNumber;
+      }
+
+      function takePriceNumber(id){
+         const price=document.getElementById(id).innerText;
+         return price;
+      }
+
+
+      function updateItemAmountText(id,counterNumber){
+         const totalItemNumber=takeItemAmountNumber(id)+counterNumber;
+         document.getElementById(id).value=totalItemNumber;
+      }
+
+      function priceStatus(){
+         let subtotal=parseInt(takePriceNumber('current-item-one-price'))+parseInt(parseInt(takePriceNumber('current-item-two-price')));
+      document.getElementById('sub-total-price').innerText=subtotal;
+      document.getElementById('total-price').innerText=subtotal+parseInt(takePriceNumber('tax-price'));
+      }
+
+      //testing
+      function test(text){
+         console.log(text);
+      }
+
+     
+
+      //----------------------handler area----------------------
+
+      //1st cart item handler
+      document.getElementById('plus-item-one').addEventListener('click',function(){  
+         if(takeItemAmountNumber('item-one-amount')>=1){
+            updateItemAmountText('item-one-amount',1); 
+
+            const updateItemOnePrice=1219*takeItemAmountNumber('item-one-amount');
+            document.getElementById('current-item-one-price').innerText=updateItemOnePrice;
+            
+            priceStatus();
+         }        
+      })
+
+      document.getElementById('minus-item-one').addEventListener('click',function(){
+         if(takeItemAmountNumber('item-one-amount')>1){
+            updateItemAmountText('item-one-amount',-1); 
+
+            const updateItemOnePrice=takePriceNumber('current-item-one-price')-1219;            
+            document.getElementById('current-item-one-price').innerText=updateItemOnePrice;
+
+            priceStatus();
+         }         
+      })
+
+      //2nd cart item handler
+      document.getElementById('plus-item-two').addEventListener('click',function(){  
+         if(takeItemAmountNumber('item-two-amount')>=1){
+            updateItemAmountText('item-two-amount',1); 
+
+            const updateItemOnePrice=59*takeItemAmountNumber('item-two-amount');
+            document.getElementById('current-item-two-price').innerText=updateItemOnePrice;
+
+            priceStatus();
+            
+            
+         }        
+      })
+
+      document.getElementById('minus-item-two').addEventListener('click',function(){
+         if(takeItemAmountNumber('item-two-amount')>1){
+            updateItemAmountText('item-two-amount',-1); 
+
+            const updateItemOnePrice=takePriceNumber('current-item-two-price')-59;            
+            document.getElementById('current-item-two-price').innerText=updateItemOnePrice;
+
+            priceStatus();
+         }         
+      })
+
+      // document.getElementById('checkout-button').addEventListener('click',function(){
+      //    console.log(alert(document.getElementById('total-price').innerText));
+      // });
+
+    
+
+
+      
+
+   </script>
 </body>
 
 </html>
